@@ -3,17 +3,19 @@
 Servo mg995Servo; // create a servo object
 bool dispensing{false};
 bool holding{false};
-constexpr int SERVO_PIN{1}; // define the PWM pin to which the servo is connected
+constexpr int SERVO_PIN{2}; // define the PWM pin to which the servo is connected
 constexpr int SENSOR_PIN{0};  // This is our input pin
 uint onHoldCount = 0;
 uint offHoldCount = 0;
 constexpr uint ON_THRESHOLD{3};
 constexpr uint OFF_THRESHOLD{2};
 constexpr uint CYCLE_TIME_ms{100};
+constexpr int OPEN_SERVO_VALUE{90};
+constexpr int CLOSE_SERVO_VALUE{0};
 
 void setupServo(){
   mg995Servo.attach(SERVO_PIN); // attaches the servo to the PWM pin
-  mg995Servo.write(0);
+  mg995Servo.write(CLOSE_SERVO_VALUE);
 };
 
 void setupSensor(){
@@ -23,13 +25,13 @@ void setupSensor(){
 void closeTap()
 {
   Serial.println("Close");
-  mg995Servo.write(0);
+  mg995Servo.write(CLOSE_SERVO_VALUE);
 }
 
 void openTap()
 {
   Serial.println("Open");
-  mg995Servo.write(90);
+  mg995Servo.write(OPEN_SERVO_VALUE);
 }
 
 bool cupDetected()
@@ -42,7 +44,7 @@ bool cupDetected()
 void checkReady()
 {
   if(onHoldCount>ON_THRESHOLD){
-    Serial.println("Ready to dispense!");
+    // Serial.println("Ready to dispense!");
     dispensing = true;
   }
   else{
@@ -55,7 +57,7 @@ void checkReady()
 void checkIdle()
 {
   if(offHoldCount>OFF_THRESHOLD){
-    Serial.println("Back to idle!");
+    // Serial.println("Back to idle!");
     dispensing = false;
     onHoldCount = 0;
   }
@@ -75,7 +77,6 @@ void checkSensor(){
   }
 };
 void updateServo(){
-  // dispensing ? openTap() : closeTap();
   if(dispensing)
   openTap();
   else closeTap();
