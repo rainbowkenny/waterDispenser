@@ -3,8 +3,8 @@
 Servo mg995Servo; // create a servo object
 bool dispensing{false};
 bool holding{false};
-constexpr int SERVO_PIN{2}; // define the PWM pin to which the servo is connected
-constexpr int SENSOR_PIN{0};  // This is our input pin
+constexpr int SERVO_PIN{27}; // define the PWM pin to which the servo is connected
+constexpr int SENSOR_PIN{28};  // This is our input pin
 uint onHoldCount = 0;
 uint offHoldCount = 0;
 constexpr uint ON_THRESHOLD{3};
